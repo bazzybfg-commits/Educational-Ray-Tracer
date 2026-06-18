@@ -27,64 +27,80 @@ class vec3():
     
     # operations
 
-    def __add__(self, obj2):
-        self.x += obj2.x
-        self.y += obj2.y
-        self.z += obj2.z
-        return self
+    def __add__(self, other):
+        if isinstance(other, vec3):
+            i = self.x + other.x
+            j = self.y + other.y
+            k = self.z + other.z
+            return vec3(i, j, k)
+        else:
+            raise TypeError(f"expected a vec3, got {type(other).__name__}")
 
-    def __sub__(self, obj2):
-        self.x -= obj2.x
-        self.y -= obj2.y
-        self.z -= obj2.z
-        return self
+    def __sub__(self, other):
+        if isinstance(other, vec3):
+            i = self.x - other.x
+            j = self.y - other.y
+            k = self.z - other.z
+            return vec3(i, j, k)
+        else:
+            raise TypeError(f"expected a vec3, got {type(other).__name__}")
 
-    def __mult__(self, obj2):
-        temp = (self.x, self.y, self.z)
-        if isinstance(obj2, vec3):
-            temp[0] *= obj2.x
-            temp[1] *= obj2.y
-            temp[2] *= obj2.z
-            return self
+    def __mul__(self, other):
+        if isinstance(other, vec3):
+            return vec3(
+                self.x * other.x,
+                self.y * other.y,
+                self.z * other.z
+            )
         
-        elif isinstance(obj2, int) or isinstance(obj2, int):
-            temp[0] *= obj2
-            temp[1] *= obj2
-            temp[2] *= obj2
-            return self
-    
-    def __truediv__(self, obj2):
-        temp = (self.x, self.y, self.z)
-        if isinstance(obj2, vec3):
-            x = temp[0] / obj2.x
-            y = temp[1] / obj2.y
-            z = temp[2] / obj2.z
-            return vec3(x, y, z)
-        elif isinstance(obj2, int) or isinstance(obj2, float):
-            x = temp[0] / obj2
-            y = temp[1] / obj2
-            z = temp[2] / obj2
-            return vec3(x, y, z)
+        elif isinstance(other, int) or isinstance(other, float):
+            return vec3(
+                self.x * other,
+                self.y * other,
+                self.z * other
+            )
         else:
             raise TypeError
     
+    def __rmul__(self, other):
+        return self.__mul__(other)
+            
+    def __truediv__(self, other):
+        if isinstance(other, vec3):
+            i = self.x / other.x
+            j = self.y / other.y
+            k = self.z / other.z
+            return vec3(i, j, k)
+        
+        elif isinstance(other, int) or isinstance(other, float):
+            i = self.x / other
+            j = self.y / other
+            k = self.z / other
+            return vec3(i, j, k)
+        else:
+            raise TypeError(f"expected vec3 or number, not {type(other).__name__}")
+    
+    def __rtruediv__(self, other):
+        if not isinstance(other, vec3):
+            raise TypeError(f"cannot divide a(n) {type(other).__name__} by a vec3")
+        
     def __abs__(self):
         return self.length()
 
     def __repr__(self):
         return str([self.x, self.y, self.z])
     # dot product
-    def dot(self, obj2):
-        i = self.x * obj2.x
-        j = self.y * obj2.y
-        k = self.z * obj2.z
+    def dot(self, other):
+        i = self.x * other.x
+        j = self.y * other.y
+        k = self.z * other.z
         return i + j + k
     
     # cross product
-    def cross(self, obj2):
-        i = self.y * obj2.z - self.z * obj2.y
-        j = self.z * obj2.x - self.x * obj2.z
-        k = self.x * obj2.y - self.y * obj2.x
+    def cross(self, other):
+        i = self.y * other.z - self.z * other.y
+        j = self.z * other.x - self.x * other.z
+        k = self.x * other.y - self.y * other.x
         return vec3(i, j, k)
     
     def normalise(self):
@@ -92,17 +108,5 @@ class vec3():
 
 # all testing stuff goes below:
 if __name__ == "__main__":
-    from time import time_ns
-
-    myvec = vec3(3, 3, 3)
-    myvec2 = vec3(-1, 3.12, 7.5)
-
-    startTime = time_ns()
-    for i in range(10000000):
-        myvec.normalise()
-    stopTime = time_ns()
-    
-    finalTime = (stopTime-startTime) / 10000000
-    print(finalTime)
-
+    pass
     
