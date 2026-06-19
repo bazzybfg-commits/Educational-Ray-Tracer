@@ -12,13 +12,6 @@ class vec3():
     # vector functions (for utility)
     # ----------------------------------------------------------
 
-    def x(self):
-        return self.x
-    def y(self):
-        return self.y
-    def z(self):
-        return self.z
-    
     def length_squared(self):
         return self.x * self.x + self.y * self.y + self.z * self.z
     
